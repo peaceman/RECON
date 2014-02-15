@@ -17,7 +17,7 @@
 <div class="container" ng-controller="EventDefinitionController">
 	<div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
-			<h2>Create event definition</h2>
+			<h3>Create event definition</h3>
 			<form class="row" ng-submit="createEventDefinition()" name="form">
 				<label for="eventDefinitionName" class="sr-only">Name</label>
 				<div class="col-sm-2" ng-class="{'has-error': form.eventDefinitionName.$invalid && form.eventDefinitionName.$dirty}">
@@ -56,6 +56,7 @@
 					<td>{{ eD.createdAt }}</td>
 					<td>{{ eD.updatedAt }}</td>
 					<td>
+						<a class="btn btn-default" ng-click="recordEventOccurrence(eD)">Record occurrence</a>
 						<a class="btn btn-danger" ng-click="deleteEventDefinition(eD)">Delete</a>
 					</td>
 				</tr>

@@ -50,4 +50,15 @@ angular.module('RECON', [])
           console.error('Error while deleting an event definition; arguments:', arguments);
         });
     };
+
+    $scope.recordEventOccurrence = function (eventDefinition) {
+      $http.post('/api/event-definitions/' + eventDefinition.id + '/record-occurrence')
+        .success(function (data) {
+          console.info('Recorded occurrence; arguments:', arguments);
+          eventDefinition.occurrences = _.map(data, Utils.camelizePropertyNames);
+        })
+        .error(function (data) {
+          console.error('Error while recoring an occurrence; arguments:', arguments);
+        });
+    };
   })

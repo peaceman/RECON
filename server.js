@@ -97,10 +97,34 @@ app.delete('/api/event-definitions/:eventDefinitionId', function (req, res) {
     })
     .catch(function (e) {
       console.error('failed to delete an event definition', e);
-      res.status(500)
+      res.status(500);
       res.json(arguments);
     });
 });
+
+app.post('/api/event-definitions/:eventDefinitionId/record-occurrence', function (req, res) {
+  EventDefinition.forge({id: req.params.eventDefinitionId})
+    .fetch({require: true})
+    .then(function (eventDefinition) {
+      return eventDefinition.related('occurrences')
+        .create({})
+        .yield(eventDefinition);
+    })
+    .then(function (eventDefinition) {
+      return eventDefinition.occurrences().fetch();
+    })
+    .then(function (occurrences) {
+      res.status(201);
+      res.json(occurrences.map(function (model) {
+        return Utils.snakeCasePropertyNames(model.toJSON());
+      }));
+    })
+    .catch(function (e) {
+      console.error('failed to record an event occurrence', e);
+      res.status(500);
+      res.json(arguments);
+    });
+})
 
 // frontend application route
 app.get('*', function (req, res) {
