@@ -32,7 +32,6 @@ var Utils = {
     }, {});
   },
   snakeCasePropertyNames: function (model) {
-    console.info('snakeCasePropertyNames', arguments);
     return _.reduce(model, function (memo, val, key) {
       memo[_.str.underscored(key)] = val;
       return memo;
@@ -81,8 +80,9 @@ app.post('/api/event-definitions', function (req, res) {
     .then(function (createdModel) {
       res.json(Utils.snakeCasePropertyNames(createdModel.toJSON()));
     })
-    .error(function () {
-      console.error('failed to create new event definition; arguments:', arguments);
+    .catch(function (e) {
+      console.error('failed to create new event definition', e);
+      res.status(500);
       res.json(arguments);
     });
 });
@@ -93,11 +93,11 @@ app.delete('/api/event-definitions/:eventDefinitionId', function (req, res) {
     .then(function (modelToDelete) {
       modelToDelete.destroy();
 
-      console.info('model was deleted; arguments:', arguments);
       res.json(Utils.snakeCasePropertyNames(modelToDelete.toJSON()));
     })
-    .error(function () {
-      console.error('failed to delete an event definition; arguments', arguments);
+    .catch(function (e) {
+      console.error('failed to delete an event definition', e);
+      res.status(500)
       res.json(arguments);
     });
 });
