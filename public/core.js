@@ -33,6 +33,7 @@ angular.module('RECON', [])
           console.info('Created new event definition; arguments:', arguments);
           $scope.eventDefinitions.push(Utils.camelizePropertyNames(data));
           $scope.formData = {};
+          $scope.form.$setPristine();
         })
         .error(function (data) {
           console.error('Error while creating an event definition; arguments:', arguments);
