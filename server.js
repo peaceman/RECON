@@ -91,11 +91,10 @@ app.delete('/api/event-definitions/:eventDefinitionId', function (req, res) {
   EventDefinition.forge({id: req.params.eventDefinitionId})
     .fetch({require: true})
     .then(function (modelToDelete) {
-      return modelToDelete.destroy();
-    })
-    .then(function () {
-      console.debug('model was deleted; arguments', arguments);
-      res.json(arguments);
+      modelToDelete.destroy();
+
+      console.info('model was deleted; arguments:', arguments);
+      res.json(Utils.snakeCasePropertyNames(modelToDelete.toJSON()));
     })
     .error(function () {
       console.error('failed to delete an event definition; arguments', arguments);

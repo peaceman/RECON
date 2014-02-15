@@ -32,9 +32,21 @@ angular.module('RECON', [])
         .success(function (data) {
           console.info('Created new event definition; arguments:', arguments);
           $scope.eventDefinitions.push(Utils.camelizePropertyNames(data));
+          $scope.formData = {};
         })
         .error(function (data) {
           console.error('Error while creating an event definition; arguments:', arguments);
+        });
+    };
+
+    $scope.deleteEventDefinition = function (eventDefinition) {
+      $http.delete('/api/event-definitions/' + eventDefinition.id)
+        .success(function (data) {
+          console.info('Deleted event definition; arguments:', arguments);
+          _.remove($scope.eventDefinitions, {id: eventDefinition.id});
+        })
+        .error(function (data) {
+          console.error('Error while deleting an event definition; arguments:', arguments);
         });
     };
   })

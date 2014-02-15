@@ -56,7 +56,7 @@
 					<td>{{ eD.createdAt }}</td>
 					<td>{{ eD.updatedAt }}</td>
 					<td>
-						-
+						<a class="btn btn-danger" ng-click="deleteEventDefinition(eD)">Delete</a>
 					</td>
 				</tr>
 				<tr ng-show="!eventDefinitions">
