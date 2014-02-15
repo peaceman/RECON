@@ -46,6 +46,38 @@ app.get('/api/event-definitions', function (req, res) {
   })
 });
 
+app.post('/api/event-definitions', function (req, res) {
+  var newEventDefinition = EventDefinition.forge({
+    name: req.body.name,
+    expectedDailyOccurrences: req.body.expectedDailyOccurrences
+  });
+
+  newEventDefinition.save()
+    .then(function (createdModel) {
+      res.json(createdModel);
+    })
+    .error(function () {
+      console.error('failed to create new event definition; arguments:', arguments);
+      res.json(arguments);
+    });
+});
+
+app.delete('/api/event-definitions/:eventDefinitionId', function (req, res) {
+  EventDefinition.forge({id: req.params.eventDefinitionId})
+    .fetch({require: true})
+    .then(function (modelToDelete) {
+      return modelToDelete.destroy();
+    })
+    .then(function () {
+      console.debug('model was deleted; arguments', arguments);
+      res.json(arguments);
+    })
+    .error(function () {
+      console.error('failed to delete an event definition; arguments', arguments);
+      res.json(arguments);
+    });
+});
+
 // boot
 app.listen(LISTEN_PORT);
 console.info('app listening on port', LISTEN_PORT);
