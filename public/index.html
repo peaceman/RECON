@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="RECON">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>RECON</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+	<script src="core.js"></script>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2">
+			<h2>Create event definition</h2>
+			<form class="row">
+				<label for="eventDefinitionName" class="sr-only">Name</label>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" id="eventDefinitionName" placeholder="Name">
+				</div>
+
+				<label for="expectedDailyOccurrences" class="sr-only">Expected daily occurrences</label>
+				<div class="col-sm-8">
+					<input type="number" class="form-control" id="expectedDailyOccurrences" min="1" placeholder="Expected daily occurrences">
+				</div>
+
+				<div class="col-sm-2">
+					<button class="btn btn-primary" type="submit">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<h3>Event definitions</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Expected daily occurrences</th>
+					<th>Created at</th>
+					<th>Updated at</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="eD in eventDefinitions">
+					<td>{{ eD.id }}</td>
+					<td>{{ eD.name }}</td>
+					<td>{{ eD.expectedDailyOccurrences }}</td>
+					<td>{{ eD.createdAt }}</td>
+					<td>{{ eD.updatedAt }}</td>
+					<td>
+						-
+					</td>
+				</tr>
+				<tr ng-show="!eventDefinitions">
+					<td colspan="6">No data available</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

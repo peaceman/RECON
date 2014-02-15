@@ -78,6 +78,10 @@ app.delete('/api/event-definitions/:eventDefinitionId', function (req, res) {
     });
 });
 
+// frontend application route
+app.get('*', function (req, res) {
+  res.sendfile('./public/index.html');
+});
 // boot
 app.listen(LISTEN_PORT);
 console.info('app listening on port', LISTEN_PORT);
