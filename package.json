@@ -5,6 +5,7 @@
 	"author": "peaceman",
 	"private": true,
 	"dependencies": {
-		"express": "3.4.x"
+		"express": "3.4.x",
+		"mysql": "2.0.x"
 	}
 }
