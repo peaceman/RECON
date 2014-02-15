@@ -18,19 +18,19 @@
 	<div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
 			<h2>Create event definition</h2>
-			<form class="row" ng-submit="createEventDefinition()">
+			<form class="row" ng-submit="createEventDefinition()" name="form">
 				<label for="eventDefinitionName" class="sr-only">Name</label>
-				<div class="col-sm-2">
-					<input type="text" class="form-control" id="eventDefinitionName" placeholder="Name" ng-model="formData.name">
+				<div class="col-sm-2" ng-class="{'has-error': form.eventDefinitionName.$invalid && form.eventDefinitionName.$dirty}">
+					<input type="text" class="form-control" id="eventDefinitionName" name="eventDefinitionName" placeholder="Name" ng-model="formData.name" required>
 				</div>
 
 				<label for="expectedDailyOccurrences" class="sr-only">Expected daily occurrences</label>
-				<div class="col-sm-8">
-					<input type="number" class="form-control" id="expectedDailyOccurrences" min="1" placeholder="Expected daily occurrences" ng-model="formData.expectedDailyOccurrences">
+				<div class="col-sm-8" ng-class="{'has-error': form.expectedDailyOccurrences.$invalid && form.expectedDailyOccurrences.$dirty}">
+					<input type="number" class="form-control" id="expectedDailyOccurrences" name="expectedDailyOccurrences" min="1" placeholder="Expected daily occurrences" ng-model="formData.expectedDailyOccurrences" required>
 				</div>
 
 				<div class="col-sm-2">
-					<button class="btn btn-primary" type="submit">Add</button>
+					<button class="btn btn-primary" type="submit" ng-disabled="form.$invalid || form.$pristine">Add</button>
 				</div>
 			</form>
 		</div>
