@@ -16,6 +16,7 @@ var MySql = Bookshelf.initialize({
     charset: 'utf8'
   }
 });
+var knex = MySql.knex;
 
 app.configure(function () {
   app.use(express.static(__dirname + '/public'));
@@ -63,9 +64,26 @@ var EventOccurrence = BaseModel.extend({
 
 // define routes
 app.get('/api/event-definitions', function (req, res) {
-  EventDefinition.collection().fetch().then(function (eventDefinitions) {
+  EventDefinition.collection()
+    .fetch({
+      withRelated: [
+        'occurrences',
+        {
+          'occurrences': function (qb) {
+            qb.where(knex.raw('DATE(`created_at`) = DATE(NOW())'));
+          }
+        }
+      ]
+    })
+    .then(function (eventDefinitions) {
     res.json(eventDefinitions.map(function (model) {
-      return Utils.snakeCasePropertyNames(model.toJSON());
+      var result = Utils.snakeCasePropertyNames(model.toJSON());
+
+      result.occurrences = _.map(result.occurrences, function (model) {
+        return Utils.snakeCasePropertyNames(model);
+      });
+
+      return result;
     }));
   })
 });
@@ -111,7 +129,11 @@ app.post('/api/event-definitions/:eventDefinitionId/record-occurrence', function
         .yield(eventDefinition);
     })
     .then(function (eventDefinition) {
-      return eventDefinition.occurrences().fetch();
+      return eventDefinition.occurrences()
+        .query(function (qb) {
+          qb.where(knex.raw('DATE(`created_at`) = DATE(NOW())'));
+        })
+        .fetch();
     })
     .then(function (occurrences) {
       res.status(201);

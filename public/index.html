@@ -42,7 +42,7 @@
 				<tr>
 					<th>#</th>
 					<th>Name</th>
-					<th>Expected daily occurrences</th>
+					<th>Daily occurrences</th>
 					<th>Created at</th>
 					<th>Updated at</th>
 					<th>Actions</th>
@@ -52,12 +52,12 @@
 				<tr ng-repeat="eD in eventDefinitions">
 					<td>{{ eD.id }}</td>
 					<td>{{ eD.name }}</td>
-					<td>{{ eD.expectedDailyOccurrences }}</td>
+					<td><span title="Occurrences of today">{{ eD.occurrences.length || 0 }}</span> / <span title="Expected daily occurrences">{{ eD.expectedDailyOccurrences }}</span></td>
 					<td>{{ eD.createdAt }}</td>
 					<td>{{ eD.updatedAt }}</td>
 					<td>
-						<a class="btn btn-default" ng-click="recordEventOccurrence(eD)">Record occurrence</a>
-						<a class="btn btn-danger" ng-click="deleteEventDefinition(eD)">Delete</a>
+						<a class="btn btn-default btn-xs" ng-click="recordEventOccurrence(eD)">Record occurrence</a>
+						<a class="btn btn-danger btn-xs" ng-click="deleteEventDefinition(eD)">Delete</a>
 					</td>
 				</tr>
 				<tr ng-show="!eventDefinitions">
