@@ -1,0 +1,10 @@
+{
+	"name": "RECON",
+	"version": "0.0.1",
+	"description": "Recurring Events Controller",
+	"author": "peaceman",
+	"private": true,
+	"dependencies": {
+		"express": "3.4.x"
+	}
+}
