@@ -1,11 +1,13 @@
 {
-	"name": "RECON",
-	"version": "0.0.1",
-	"description": "Recurring Events Controller",
-	"author": "peaceman",
-	"private": true,
-	"dependencies": {
-		"express": "3.4.x",
-		"mysql": "2.0.x"
-	}
+  "name": "RECON",
+  "version": "0.0.1",
+  "description": "Recurring Events Controller",
+  "author": "peaceman",
+  "private": true,
+  "dependencies": {
+    "express": "3.4.x",
+    "mysql": "2.0.x",
+    "knex": "~0.5.6",
+    "bookshelf": "~0.6.4"
+  }
 }
