@@ -2,6 +2,8 @@
 var express = require('express');
 var app = express();
 var Bookshelf = require('bookshelf');
+var _ = require('lodash');
+_.str = require('underscore.string');
 
 // configuration
 var LISTEN_PORT = 1337;
@@ -22,18 +24,39 @@ app.configure(function () {
   app.use(express.methodOverride());
 });
 
-// define models
-var EventDefinition = MySql.Model.extend({
+var Utils = {
+  camelizePropertyNames: function (model) {
+    return _.reduce(model, function (memo, val, key) {
+      memo[_.str.camelize(key)] = val;
+      return memo;
+    }, {});
+  },
+  snakeCasePropertyNames: function (model) {
+    console.info('snakeCasePropertyNames', arguments);
+    return _.reduce(model, function (memo, val, key) {
+      memo[_.str.underscored(key)] = val;
+      return memo;
+    }, {});
+  }
+};
+
+// define model
+var BaseModel = MySql.Model.extend({
+  format: Utils.snakeCasePropertyNames,
+  parse: Utils.camelizePropertyNames
+});
+
+var EventDefinition = BaseModel.extend({
   tableName: 'event_definitions',
-  hasTimestamp: true,
+  hasTimestamps: true,
   occurrences: function () {
     return this.hasMany(EventOccurrence);
   }
 });
 
-var EventOccurrence = MySql.Model.extend({
+var EventOccurrence = BaseModel.extend({
   tableName: 'event_occurrences',
-  hasTimestamp: ['createdAt'],
+  hasTimestamps: ['createdAt'],
   eventDefinition: function () {
     return this.belongsTo(EventDefinition);
   }
@@ -42,19 +65,21 @@ var EventOccurrence = MySql.Model.extend({
 // define routes
 app.get('/api/event-definitions', function (req, res) {
   EventDefinition.collection().fetch().then(function (eventDefinitions) {
-    res.json(eventDefinitions);
+    res.json(eventDefinitions.map(function (model) {
+      return Utils.snakeCasePropertyNames(model.toJSON());
+    }));
   })
 });
 
 app.post('/api/event-definitions', function (req, res) {
   var newEventDefinition = EventDefinition.forge({
     name: req.body.name,
-    expectedDailyOccurrences: req.body.expectedDailyOccurrences
+    expectedDailyOccurrences: req.body.expected_daily_occurrences
   });
 
   newEventDefinition.save()
     .then(function (createdModel) {
-      res.json(createdModel);
+      res.json(Utils.snakeCasePropertyNames(createdModel.toJSON()));
     })
     .error(function () {
       console.error('failed to create new event definition; arguments:', arguments);
